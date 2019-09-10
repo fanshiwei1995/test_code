@@ -8,6 +8,7 @@
 #include <queue>
 #include <set>
 #include <map>
+#include <string.h>
 
 using namespace std;
 
@@ -420,7 +421,6 @@ using namespace std;
 
 
 
-
 //**************阿里一面：评测题目:  三个人玩斗地主(去掉大小鬼), 怎样判断1人手中的牌有顺子**********************//
 //输入：牌号为string，如357810AKQ10AA323等，无空格隔开
 //输出：bool值，true代表有顺子
@@ -490,4 +490,276 @@ using namespace std;
 
 
 
-//*****************
+//****字节跳动研发岗第三次笔试第一题：机器人排成一排只往正前看，能被看到的次数最多的机器人身高**//
+
+//例子      4
+//          6 5 3 4   （一个机器人最多只能看到一个）
+//          1
+//          1<1
+//          1 1<<<1
+//          1 1<1 1
+//          1 1 1 1
+//          1 1 1 1
+//被看到次数1 2 0 0
+//    输出：5 （5能被3和4看到）
+
+//int main() {
+//	int n;
+//	cin >> n;
+//	vector<int> v;
+//	for (int i = 0; i < n; ++i) {
+//		int x;
+//		cin >> x;
+//		v.push_back(x);
+//	}
+//	vector<int> dp(n, 0);
+//	for (int i = n - 1; i > 0; --i) {
+//		for (int j = i - 1; j >= 0; --j) {
+//			if (v[j] >= v[i]) {  //第j个机器人被第i个机器人看到
+//				dp[j]++;
+//				break;
+//			}
+//		}
+//	}
+//	int max_idx = -1;
+//	int max = 0;
+//	for (int i = 0; i < n; ++i) {
+//		if (dp[i] > max) {
+//			max = dp[i];
+//			max_idx = i;
+//		}
+//	}
+//	cout << v[max_idx] << endl;
+//	getchar();
+//	getchar();
+//}
+
+
+
+//**字节跳动研发岗第三次笔试第四题：解码问题，'A'->1,'B'->2,...'Z'->26，已知数字，求所有可能解码情况//
+//例子： 输入：  12
+//       输出：  AB
+//               L
+
+//string s;
+//void find(int i, int N, string &st) {
+//	if (i == N) {
+//		for (int k = 0; k < s.size(); ++k)
+//			cout << s[k];
+//		cout << endl;
+//		return;
+//	}
+//	else {
+//		if (st[i] != '0') {
+//			s.push_back(st[i] - '1' + 'A');
+//			find(i + 1, N, st);  //递归进行下一个
+//			s.pop_back();
+//			if (i < N - 1) {
+//				int z = (st[i] - '0') * 10 + (st[i + 1] - '0');
+//				char t = z - 1 + 'A';
+//				if (t <= 'Z' && t >= 'A') {
+//					s.push_back(t);
+//					find(i + 2, N, st);  //两位数后，递归下一个
+//					s.pop_back();
+//				}
+//			}
+//		}
+//	}
+//}
+//int main() {
+//	string st;
+//	cin >> st;
+//	find(0, st.size(), st);
+//	getchar();
+//	getchar();
+//
+//}
+
+
+
+
+//**字节跳动研发岗第三次笔试第二题：倒水问题：三个容器t[1]、t[2]、t[3]，至少需要倒几次，才能恰好d升水//
+
+//解题思路：先将每种倒水方式全部列出，得出三叉树，再广度优先遍历，
+//找到某个容器出现了d升水，其深度即为最少次数
+//queue<long long> t1;
+//queue<long long> t2;
+//queue<long long> t3;
+//queue<long long> t4;
+//bool flag;
+//map<pair< pair< long long, long long >, long long >, bool> b;
+//long long ans, t[4], x[4], z[4], tt, d;
+//void qpush(long long k1, long long k2, long long k3)
+//{
+//	//cout << k1 << " " << k2 <<" " << k3 << endl;
+//	if (b.count(make_pair(make_pair(k1, k2), k3)) == 1)
+//		return;
+//	b[make_pair(make_pair(k1, k2), k3)] = true;
+//	t1.push(k1);
+//	t2.push(k2);
+//	t3.push(k3);
+//	t4.push(tt + 1);
+//	if (k1 == d || k2 == d || k3 == d)
+//	{
+//		flag = true;
+//		ans = tt + 1;
+//	}
+//}
+//int main()
+//{
+//	cin >> t[1] >> t[2] >> t[3] >> d;
+//	ans = -1;
+//	t1.push(0);
+//	t2.push(0);
+//	t3.push(0);
+//	t4.push(0);
+//	b[make_pair(make_pair(0, 0), 0)] = true;
+//	while (!t1.empty()){
+//		x[1] = t1.front();
+//		x[2] = t2.front();
+//		x[3] = t3.front();
+//		tt = t4.front();
+//		qpush(0, x[2], x[3]);
+//		qpush(x[1], 0, x[3]);
+//		qpush(x[1], x[2], 0);
+//		qpush(t[1], x[2], x[3]);
+//		qpush(x[1], t[2], x[3]);
+//		qpush(x[1], x[2], t[3]);
+//
+//		for (int i = 1; i <= 3; i++)
+//			for (int j = 1; j <= 3; j++)
+//				if (i != j)
+//				{
+//					if (x[i] <= t[j] - x[j])
+//					{
+//						z[1] = x[1];
+//						z[2] = x[2];
+//						z[3] = x[3];
+//						z[i] = 0;
+//						z[j] = x[i] + x[j];
+//					}
+//					else {
+//						z[1] = x[1];
+//						z[2] = x[2];
+//						z[3] = x[3];
+//						z[i] = x[i] - (t[j] - x[j]);
+//						z[j] = t[j];
+//					}
+//					qpush(z[1], z[2], z[3]);
+//				}
+//
+//		if (flag) 
+//			break;
+//		t1.pop();
+//		t2.pop();
+//		t3.pop();
+//		t4.pop();
+//	}
+//	cout << ans << endl;
+//
+//	getchar();
+//	getchar();
+//}
+
+
+
+
+//***************哔哩哔哩第一题：两个单词之间转换的最少步骤**********************//
+//注：所需最少步数，允许插入、删除、替换字母三种操作
+
+//int main() {
+//	string word1, word2;
+//	cin >> word1;
+//	cin >> word2;
+//	int n = word1.length();
+//	int m = word2.length();
+//
+//	if (n == 0 || m == 0)
+//		return n + m;
+//	vector<vector<int> > dp(n + 1, vector<int>(m + 1, 0));
+//	for (int i = 0; i <= n; ++i) {
+//		dp[i][0] = i;
+//	}
+//	for (int i = 0; i <= m; ++i) {
+//		dp[0][i] = i;
+//	}
+//
+//	for (int i = 1; i <= n; ++i) {
+//		for (int j = 1; j <= m; ++j) {
+//			int l = dp[i - 1][j] + 1;    //left数字记录字符表中的字符进行插入 后 的最小步数
+//			int d = dp[i][j - 1] + 1;    //down数字记录字符表中的字符进行删除 后 的最小步数
+//			int l_d = dp[i - 1][j - 1];  //left_down数字记录字符表中的字符进行替换 前 的最小步数
+//			if (word1[i - 1] != word2[j - 1]) {  
+//				l_d++;                //若替换 前 的字符不等，则需要进行替换，最小步数++
+//			}
+//			dp[i][j] = min(l, min(d, l_d));  //求三种情况下的最小步数，保存进dp表
+//		}
+//	}
+//	cout << dp[n][m] << endl;  //最终输出
+//	getchar();
+//	getchar();
+//}
+
+
+//***************哔哩哔哩第二题：连续整数求和为N,共有多少情况**********************//
+
+//int main() {
+//	int N;
+//	cin >> N;
+//	int out = 1;
+//	int x = 2 * N;
+//	for (int i = 2; i <= sqrt(x); ++i) {
+//		if (x%i == 0) {
+//			double n2 = (i + x / i - 1) / 2;
+//			double n1 = x / i - n2;
+//			if (n1 < n2 && (int)n1 == n1 && (int)n2 == n2)
+//				if ((n1 + n2)*(n2 - n1 + 1) == x)
+//					out++;
+//		}
+//	}
+//	cout << out << endl;
+//	getchar();
+//	getchar();
+//}
+
+
+
+//***************哔哩哔哩第三题：字符串切分，转为键值对**********************//
+
+//输入： 键值对分隔符pairs_delimiter, 键与值分隔符delimiter，字符串str；三者以空格' '隔开
+//      如：  # : a:1#wasd:12#23:-1
+//输出： 键值对个数，以及按行输出键值对，键值间空格分开
+//      如：  3         ——个数
+//            a 1       ——键值对1
+//            wasd 12   ——键值对2
+//            23 -1     ——键值对3
+
+//int main() {
+//	char pairs_delimiter, delimiter;
+//	string str;
+//	cin >> pairs_delimiter >> delimiter >> str;
+//	
+//	//输出的键值对模式的数据
+//	vector<pair<string, int> > key_vals;
+//	string key;
+//	int val;
+//	//将输入字符串str按pairs_delimiter分隔符分割为若干sub_str字串
+//	stringstream f(str);
+//	string sub_str;
+//	while (getline(f, sub_str, pairs_delimiter)) {  //分割
+//		//对每个sub_str字串，找到delimiter分隔符位置，前面部分为key,后部分为val
+//		int del = sub_str.find_first_of(delimiter);
+//		key = sub_str.substr(0, del);    //前面部分为key
+//		string s_val = sub_str.substr(del + 1);  //后部分为val
+//		stringstream ss(s_val);
+//		ss >> val;   //用字节流方法转为数字（val为int型），其实也可以不转换
+//		key_vals.push_back(make_pair(key, val));
+//	}
+//	int size = key_vals.size();
+//	cout << size << endl;
+//	for (int i = 0; i < size; ++i) {
+//		cout << key_vals[i].first << " " << key_vals[i].second << endl;
+//	}
+//	getchar();
+//	getchar();
+//}
